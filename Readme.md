@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анна Прошина](https://up.htmlacademy.ru/javascript/20/user/864863).
-* Наставник: `Неизвестно`.
+* Наставник: [Ольга Поликашина](https://htmlacademy.ru/profile/id890283).
 
 ---
 
