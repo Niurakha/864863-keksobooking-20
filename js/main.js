@@ -1,12 +1,11 @@
 'use strict';
 
 var listsDescription = {
-  typeList: ['palace', 'flat', 'house', 'bungalo'],
-  featuresList: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-  photosList: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+  TYPE_LIST: ['palace', 'flat', 'house', 'bungalo'],
+  FEATURES_LIST: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+  PHOTOS_LIST: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
 };
 
-var mapWidth = document.querySelector('.map__pins').offsetWidth;
 var NUMBER_OF_AD = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
@@ -28,6 +27,7 @@ var getRandomElement = function (arr) {
 // создаем объект
 
 var makeAd = function (count) {
+  var mapWidth = document.querySelector('.map__pins').offsetWidth;
   var locationX = getRandomInt(0, mapWidth);
   var locationY = getRandomInt(130, 630);
   return {
@@ -38,14 +38,14 @@ var makeAd = function (count) {
       title: 'Заголовок предложения',
       address: [locationX, locationY].join(','),
       price: getRandomInt(500, 10000),
-      type: getRandomElement(listsDescription.typeList),
+      type: getRandomElement(listsDescription.TYPE_LIST),
       rooms: getRandomInt(1, 6),
       guests: getRandomInt(1, 10),
       checkin: getRandomInt(12, 14) + ':00',
       checkout: getRandomInt(12, 14) + ':00',
-      features: getRandomElement(listsDescription.featuresList),
+      features: getRandomElement(listsDescription.FEATURES_LIST),
       description: 'Описание',
-      photos: getRandomElement(listsDescription.photosList)
+      photos: getRandomElement(listsDescription.PHOTOS_LIST)
     },
     'location': {
       x: locationX,
@@ -80,7 +80,7 @@ var createPin = function (offer) {
   pin.style.left = offer.location.x - (PIN_WIDTH / 2) + 'px';
   pin.style.top = offer.location.y - PIN_HEIGHT + 'px';
   pin.querySelector('img').src = offer.author.avatar;
-  pin.querySelector('img').alt = 'Альтернативная подпись';
+  pin.querySelector('img').alt = offer.offer.title;
   return pin;
 };
 
@@ -94,4 +94,4 @@ var renderPins = function (adverts) {
 };
 
 showMap();
-renderPins(NUMBER_OF_AD);
+renderPins();
