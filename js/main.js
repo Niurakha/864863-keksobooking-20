@@ -17,7 +17,8 @@ var ACCOMMODATION = {
   bungalo: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец'
-}
+};
+
 var NUMBER_OF_AD = 8;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
@@ -116,8 +117,7 @@ var createFeatureFragment = function (adData) {
   var featureFragment = document.createDocumentFragment();
   for (var i = 0; i < adData.offer.features.length; i++) {
     var featureItem = document.createElement('li');
-    featureItem.classList.add('popup__feature');
-    featureItem.classList.add('popup__feature--' + adData.offer.features[i]);
+    featureItem.classList.add('popup__feature', 'popup__feature--' + adData.offer.features[i]);
     featureFragment.appendChild(featureItem);
   }
   return featureFragment;
@@ -138,82 +138,96 @@ var createPhotosFragment = function (adData) {
 };
 
 var createCard = function (card) {
+
   var cardAd = cardTemplate.cloneNode(true);
+
+  if (!card.offer) {
+    return true;
+  }
 
   // заменяем аватар
   if (card.author.avatar) {
-    cardAd.querySelector('.popup__avatar').src = card.author.avatar;
+    var popupAvatar = cardAd.querySelector('.popup__avatar');
+    popupAvatar.src = card.author.avatar;
   } else {
-    cardAd.querySelector('.popup__avatar').remove();
+    popupAvatar.remove();
   }
 
-  if (card.offer) {
-    if (card.offer.title) {
-      // выводим заголовок в .popup__title
-      cardAd.querySelector('.popup__title').textContent = card.offer.title;
-    } else {
-      cardAd.querySelector('.popup__title').remove();
-    }
-
-    if (card.offer.address) {
-      // выводим адрес в .popup__text--address
-      cardAd.querySelector('.popup__text--address').textContent = card.offer.address;
-    } else {
-      cardAd.querySelector('.popup__text--address').remove();
-    }
-
-    if (card.offer.price) {
-      // выводим цену в .popup__text--price
-      cardAd.querySelector('.popup__text--price').textContent = card.offer.price + ' ₽/ночь';
-    } else {
-      cardAd.querySelector('.popup__text--price').remove();
-    }
-
-    if (card.offer.type) {
-      // выводим тип жилья в .popup__type
-      cardAd.querySelector('.popup__type').textContent = ACCOMMODATION[card.offer.type];
-    } else {
-      cardAd.querySelector('.popup__type').remove();
-    }
-
-    if (card.offer.rooms && card.offer.guests) {
-      // выводим количество комнат и гостей в .popup__text--capacity
-      cardAd.querySelector('.popup__text--capacity').textContent = card.offer.rooms +
-        ' комнаты для ' + card.offer.guests + ' гостей';
-    } else {
-      cardAd.querySelector('.popup__text--capacity').remove();
-    }
-
-    if (card.offer.checkin && card.offer.checkout) {
-      // выводим время заезда и выезда в .popup__text--time
-      cardAd.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin +
-        ', выезд до ' + card.offer.checkout;
-    } else {
-      cardAd.querySelector('.popup__text--time').remove();
-    }
-
-    if (card.offer.features) {
-      // выводим все доступные удобства в .popup__features
-      cardAd.querySelector('.popup__features').innerHTML = '';
-      cardAd.querySelector('.popup__features').appendChild(createFeatureFragment(card));
-    } else {
-      cardAd.querySelector('.popup__features').remove();
-    }
-
-    if (card.offer.description) {
-      // выводим описание объекта недвижимости в .popup__description
-      cardAd.querySelector('.popup__description').textContent = card.offer.description;
-    } else {
-      cardAd.querySelector('.popup__description').remove();
-    }
-    if (card.offer.photos) {
-      // выводим фотографии в .popup__photos
-      cardAd.querySelector('.popup__photos').removeChild(cardAd.querySelector('.popup__photo'));
-      cardAd.querySelector('.popup__photos').appendChild(createPhotosFragment(card));
-    } else {
-      cardAd.querySelector('.popup__photos').remove();
-    }
+  if (card.offer.title) {
+    // выводим заголовок в .popup__title
+    var popupTitle = cardAd.querySelector('.popup__title');
+    popupTitle.textContent = card.offer.title;
+  } else {
+    popupTitle.remove();
   }
+
+  if (card.offer.address) {
+    // выводим адрес в .popup__text--address
+    var popupTextAddress = cardAd.querySelector('.popup__text--address');
+    popupTextAddress.textContent = card.offer.address;
+  } else {
+    popupTextAddress.remove();
+  }
+
+  if (card.offer.price) {
+    // выводим цену в .popup__text--price
+    var popupPrice = cardAd.querySelector('.popup__text--price');
+    popupPrice.textContent = card.offer.price + ' ₽/ночь';
+  } else {
+    popupPrice.remove();
+  }
+
+  if (card.offer.type) {
+    // выводим тип жилья в .popup__type
+    var popupType = cardAd.querySelector('.popup__type');
+    popupType.textContent = ACCOMMODATION[card.offer.type];
+  } else {
+    popupType.remove();
+  }
+
+  if (card.offer.rooms && card.offer.guests) {
+    // выводим количество комнат и гостей в .popup__text--capacity
+    var popupCapacity = cardAd.querySelector('.popup__text--capacity');
+    popupCapacity.textContent = card.offer.rooms +
+      ' комнаты для ' + card.offer.guests + ' гостей';
+  } else {
+    popupCapacity.remove();
+  }
+
+  if (card.offer.checkin && card.offer.checkout) {
+    // выводим время заезда и выезда в .popup__text--time
+    var popupTextTime = cardAd.querySelector('.popup__text--time');
+    popupTextTime.textContent = 'Заезд после ' + card.offer.checkin +
+      ', выезд до ' + card.offer.checkout;
+  } else {
+    popupTextTime.remove();
+  }
+
+  if (card.offer.features) {
+    // выводим все доступные удобства в .popup__features
+    var popupFeatures = cardAd.querySelector('.popup__features');
+    popupFeatures.innerHTML = '';
+    popupFeatures.appendChild(createFeatureFragment(card));
+  } else {
+    popupFeatures.remove();
+  }
+
+  if (card.offer.description) {
+    // выводим описание объекта недвижимости в .popup__description
+    var popupDescription = cardAd.querySelector('.popup__description');
+    popupDescription.textContent = card.offer.description;
+  } else {
+    popupDescription.remove();
+  }
+  if (card.offer.photos) {
+    // выводим фотографии в .popup__photos
+    var popupPhotos = cardAd.querySelector('.popup__photos');
+    popupPhotos.removeChild(cardAd.querySelector('.popup__photo'));
+    popupPhotos.appendChild(createPhotosFragment(card));
+  } else {
+    popupPhotos.remove();
+  }
+
   return cardAd;
 };
 
