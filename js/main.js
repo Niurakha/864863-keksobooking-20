@@ -230,4 +230,8 @@ var createCard = function (card) {
   return cardAd;
 };
 
-map.insertBefore(createCard(advt[0]), mapFiltersContainer);
+var renderCard = createCard(advt[0]);
+
+if (renderCard) {
+  map.insertBefore(renderCard, mapFiltersContainer);
+}
