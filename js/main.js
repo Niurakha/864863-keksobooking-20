@@ -140,18 +140,19 @@ var setMinPrice = function (input, minPrice) {
 };
 
 priceInput.addEventListener('change', function () {
-
   if (typeInput.value === 'bungalo') {
     setMinPrice(priceInput, MIN_PRICE_BUNGALO);
-  }
-  if (typeInput.value === 'flat') {
+  } else if (typeInput.value === 'flat') {
     setMinPrice(priceInput, MIN_PRICE_FLAT);
-  }
-  if (typeInput.value === 'house') {
+    priceInput.setCustomValidity('Минимальная цена за ночь:1000');
+  } else if (typeInput.value === 'house') {
     setMinPrice(priceInput, MIN_PRICE_HOUSE);
-  }
-  if (typeInput.value === 'palace') {
+    priceInput.setCustomValidity('Минимальная цена за ночь:5000');
+  } else if (typeInput.value === 'palace') {
     setMinPrice(priceInput, MIN_PRICE_PALACE);
+    priceInput.setCustomValidity('Минимальная цена за ночь:10000');
+  } else {
+    priceInput.setCustomValidity('');
   }
 });
 
@@ -168,16 +169,15 @@ checkOutInput.addEventListener('input', function () {
 // зависимость количества гостей от количества комнат
 
 guestsInput.addEventListener('change', function () {
-  if (roomsInput.value !== '100' && guestsInput.value === '') {
+  if (roomsInput.value !== '100' && guestsInput.value === '0') {
     guestsInput.setCustomValidity('Укажите количество гостей');
-  }
-  if (roomsInput.value < guestsInput.value) {
+  } else if (roomsInput.value < guestsInput.value) {
     guestsInput.setCustomValidity('Количество гостей не может быть больше количества комнат');
-  }
-  if (roomsInput.value === '100' && guestsInput.value !== '0') {
+  } else if (roomsInput.value === '100' && guestsInput.value !== '0') {
     guestsInput.setCustomValidity('Это жилье не для гостей');
+  } else {
+    guestsInput.setCustomValidity('');
   }
-  guestsInput.setCustomValidity('');
 });
 
 // // генерируем случайное число
