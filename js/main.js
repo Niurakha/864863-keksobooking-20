@@ -1,6 +1,6 @@
 'use strict';
 
-// var pinTemplate = document.querySelector('#pin').content.querySelector('button');
+var pinTemplate = document.querySelector('#pin').content.querySelector('button');
 // var cardTemplate = document.querySelector('#card').content.querySelector('article');
 // var popupPhoto = cardTemplate.querySelector('.popup__photo');
 var map = document.querySelector('.map');
@@ -17,11 +17,11 @@ var checkOutInput = adForm.querySelector('#timeout');
 var roomsInput = adForm.querySelector('#room_number');
 var guestsInput = adForm.querySelector('#capacity');
 
-// var listsDescription = {
-//   TYPE_LIST: ['palace', 'flat', 'house', 'bungalo'],
-//   FEATURES_LIST: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-//   PHOTOS_LIST: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
-// };
+var listsDescription = {
+  TYPE_LIST: ['palace', 'flat', 'house', 'bungalo'],
+  FEATURES_LIST: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+  PHOTOS_LIST: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+};
 
 // var ACCOMMODATION = {
 //   flat: 'Квартира',
@@ -30,9 +30,9 @@ var guestsInput = adForm.querySelector('#capacity');
 //   palace: 'Дворец'
 // };
 
-// var NUMBER_OF_AD = 8;
-// var PIN_WIDTH = 50;
-// var PIN_HEIGHT = 70;
+var NUMBER_OF_AD = 8;
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 var MAIN_PIN_WIDTH = 62;
 var MAIN_PIN_HEIGHT = 62;
 var MAIN_PIN_TIP_HEIGHT = 22;
@@ -42,8 +42,8 @@ var MIN_PRICE_BUNGALO = 0;
 var MIN_PRICE_FLAT = 1000;
 var MIN_PRICE_HOUSE = 5000;
 var MIN_PRICE_PALACE = 10000;
-// var AVATAR_FILE_PATH = 'img/avatars/user0';
-// var AVATAR_FORMAT = '.png';
+var AVATAR_FILE_PATH = 'img/avatars/user0';
+var AVATAR_FORMAT = '.png';
 // var IMG_WIDTH = 45;
 // var IMG_HEIGHT = 45;
 // var IMG_ALT = 'Фотография жилья';
@@ -71,6 +71,7 @@ var activatePage = function () {
   for (var i = 0; i < adFormFieldsets.length; i++) {
     adFormFieldsets[i].removeAttribute('disabled', 'disabled');
   }
+  renderPins();
 };
 
 // поле адреса по-умолчанию
@@ -180,81 +181,79 @@ guestsInput.addEventListener('change', function () {
   }
 });
 
-// // генерируем случайное число
+// генерируем случайное число
 
-// var getRandomInt = function (min, max) {
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// };
+var getRandomInt = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
-// // генерируем случайный элемент массива
+// генерируем случайный элемент массива
 
-// var getRandomElement = function (arr) {
-//   return arr[Math.floor(Math.random() * arr.length)];
-// };
+var getRandomElement = function (arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
 
-// // создаем объект
+// создаем объект
 
-// var makeAd = function (count) {
-//   var mapWidth = document.querySelector('.map__pins').offsetWidth;
-//   var locationX = getRandomInt(0, mapWidth);
-//   var locationY = getRandomInt(130, 630);
-//   return {
-//     'author': {
-//       avatar: AVATAR_FILE_PATH + (count + 1) + AVATAR_FORMAT
-//     },
-//     'offer': {
-//       title: 'Заголовок предложения',
-//       address: [locationX, locationY].join(','),
-//       price: getRandomInt(500, 10000),
-//       type: getRandomElement(listsDescription.TYPE_LIST),
-//       rooms: getRandomInt(1, 6),
-//       guests: getRandomInt(1, 10),
-//       checkin: getRandomInt(12, 14) + ':00',
-//       checkout: getRandomInt(12, 14) + ':00',
-//       features: listsDescription.FEATURES_LIST,
-//       description: 'Описание',
-//       photos: listsDescription.PHOTOS_LIST
-//     },
-//     'location': {
-//       x: locationX,
-//       y: locationY
-//     }
-//   };
-// };
+var makeAd = function (count) {
+  var mapWidth = document.querySelector('.map__pins').offsetWidth;
+  var locationX = getRandomInt(0, mapWidth);
+  var locationY = getRandomInt(130, 630);
+  return {
+    'author': {
+      avatar: AVATAR_FILE_PATH + (count + 1) + AVATAR_FORMAT
+    },
+    'offer': {
+      title: 'Заголовок предложения',
+      address: [locationX, locationY].join(','),
+      price: getRandomInt(500, 10000),
+      type: getRandomElement(listsDescription.TYPE_LIST),
+      rooms: getRandomInt(1, 6),
+      guests: getRandomInt(1, 10),
+      checkin: getRandomInt(12, 14) + ':00',
+      checkout: getRandomInt(12, 14) + ':00',
+      features: listsDescription.FEATURES_LIST,
+      description: 'Описание',
+      photos: listsDescription.PHOTOS_LIST
+    },
+    'location': {
+      x: locationX,
+      y: locationY
+    }
+  };
+};
 
-// // создаем массив из объектов
+// создаем массив из объектов
 
-// var generateAds = function () {
-//   var ads = [];
-//   for (var i = 0; i < NUMBER_OF_AD; i++) {
-//     ads.push(makeAd(i));
-//   }
-//   return ads;
-// };
+var generateAds = function () {
+  var ads = [];
+  for (var i = 0; i < NUMBER_OF_AD; i++) {
+    ads.push(makeAd(i));
+  }
+  return ads;
+};
 
-// var advt = generateAds();
+var advt = generateAds();
 
-// // создаем DOM-элементы, соответствующие меткам на карте
+// создаем DOM-элементы, соответствующие меткам на карте
 
-// var createPin = function (element) {
-//   var pin = pinTemplate.cloneNode(true);
-//   var pinPicture = pin.querySelector('img');
-//   pin.style.left = element.location.x - (PIN_WIDTH / 2) + 'px';
-//   pin.style.top = element.location.y - PIN_HEIGHT + 'px';
-//   pinPicture.src = element.author.avatar;
-//   pinPicture.alt = element.offer.title;
-//   return pin;
-// };
+var createPin = function (element) {
+  var pin = pinTemplate.cloneNode(true);
+  var pinPicture = pin.querySelector('img');
+  pin.style.left = element.location.x - (PIN_WIDTH / 2) + 'px';
+  pin.style.top = element.location.y - PIN_HEIGHT + 'px';
+  pinPicture.src = element.author.avatar;
+  pinPicture.alt = element.offer.title;
+  return pin;
+};
 
-// var renderPins = function () {
-//   var fragment = document.createDocumentFragment();
-//   for (var i = 0; i < advt.length; i++) {
-//     fragment.appendChild(createPin(advt[i]));
-//   }
-//   document.querySelector('.map__pins').appendChild(fragment);
-// };
-
-// renderPins();
+var renderPins = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < advt.length; i++) {
+    fragment.appendChild(createPin(advt[i]));
+  }
+  document.querySelector('.map__pins').appendChild(fragment);
+};
 
 // // создаем DOM-элемент объявления (карточка объявления)
 
