@@ -67,7 +67,7 @@ disableElements(adFormFieldsets);
 
 var activatePage = function () {
   map.classList.remove('map--faded');
-  adForm.classList.remove('.ad-form--disabled');
+  adForm.classList.remove('ad-form--disabled');
   for (var i = 0; i < adFormFieldsets.length; i++) {
     adFormFieldsets[i].removeAttribute('disabled', 'disabled');
   }
