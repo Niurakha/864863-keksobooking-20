@@ -9,7 +9,6 @@ var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = adForm.querySelectorAll('fieldset');
 var addressInput = adForm.querySelector('#address');
-var titleInput = adForm.querySelector('#title');
 var priceInput = adForm.querySelector('#price');
 var typeInput = adForm.querySelector('#type');
 var checkInInput = adForm.querySelector('#timein');
@@ -30,23 +29,32 @@ var listsDescription = {
 //   palace: 'Дворец'
 // };
 
+var price = {
+  BUNGALO: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000
+};
+
 var NUMBER_OF_AD = 8;
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
-var MAIN_PIN_WIDTH = 62;
-var MAIN_PIN_HEIGHT = 62;
-var MAIN_PIN_TIP_HEIGHT = 22;
-var MIN_LENGTH_TITLE = 30;
-var MAX_LENGTH_TITLE = 100;
-var MIN_PRICE_BUNGALO = 0;
-var MIN_PRICE_FLAT = 1000;
-var MIN_PRICE_HOUSE = 5000;
-var MIN_PRICE_PALACE = 10000;
+
+var dataPin = {
+  WIDTH: 50,
+  HEIGHT: 70
+};
+
+var dataMainPin = {
+  WIDTH: 62,
+  HEIGHT: 62,
+  TIP_HEIGHT: 22
+};
+
 var AVATAR_FILE_PATH = 'img/avatars/user0';
 var AVATAR_FORMAT = '.png';
 // var IMG_WIDTH = 45;
 // var IMG_HEIGHT = 45;
 // var IMG_ALT = 'Фотография жилья';
+
 var KEYSCODE = {
   leftMouseButton: 1,
   enter: 13,
@@ -69,7 +77,7 @@ var activatePage = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
   for (var i = 0; i < adFormFieldsets.length; i++) {
-    adFormFieldsets[i].removeAttribute('disabled', 'disabled');
+    adFormFieldsets[i].removeAttribute('disabled');
   }
   renderPins();
 };
@@ -77,8 +85,8 @@ var activatePage = function () {
 // поле адреса по-умолчанию
 
 var positionMainPin = function () {
-  addressInput.value = (mapPinMain.offsetLeft + MAIN_PIN_WIDTH / 2) +
-    ', ' + (mapPinMain.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TIP_HEIGHT);
+  addressInput.value = (mapPinMain.offsetLeft + dataMainPin.WIDTH / 2) +
+    ', ' + (mapPinMain.offsetTop + dataMainPin.HEIGHT + dataMainPin.TIP_HEIGHT);
 };
 
 positionMainPin();
@@ -105,34 +113,6 @@ mapPinMain.addEventListener('keydown', function (evt) {
 
 // валидация
 
-titleInput.addEventListener('invalid', function () {
-  if (titleInput.validity.valueMissing) {
-    titleInput.setCustomValidity('Заполните, пожалуйста');
-  } else {
-    titleInput.setCustomValidity('');
-  }
-});
-
-titleInput.addEventListener('input', function () {
-  var titleLength = titleInput.value.length;
-
-  if (titleLength < MIN_LENGTH_TITLE) {
-    titleInput.setCustomValidity('Ещё ' + (MIN_LENGTH_TITLE - titleLength) + ' симв.');
-  } else if (titleLength > MAX_LENGTH_TITLE) {
-    titleInput.setCustomValidity('Удалите лишние ' + (titleLength - MAX_LENGTH_TITLE) + ' симв.');
-  } else {
-    titleInput.setCustomValidity('');
-  }
-});
-
-priceInput.addEventListener('invalid', function () {
-  if (priceInput.validity.valueMissing) {
-    priceInput.setCustomValidity('Обязательное поле');
-  } else {
-    priceInput.setCustomValidity('');
-  }
-});
-
 // устанавливаем минимальную цену
 
 var setMinPrice = function (input, minPrice) {
@@ -140,20 +120,15 @@ var setMinPrice = function (input, minPrice) {
   input.placeholder = minPrice;
 };
 
-priceInput.addEventListener('change', function () {
+typeInput.addEventListener('change', function () {
   if (typeInput.value === 'bungalo') {
-    setMinPrice(priceInput, MIN_PRICE_BUNGALO);
+    setMinPrice(priceInput, price.BUNGALO);
   } else if (typeInput.value === 'flat') {
-    setMinPrice(priceInput, MIN_PRICE_FLAT);
-    priceInput.setCustomValidity('Минимальная цена за ночь:1000');
+    setMinPrice(priceInput, price.FLAT);
   } else if (typeInput.value === 'house') {
-    setMinPrice(priceInput, MIN_PRICE_HOUSE);
-    priceInput.setCustomValidity('Минимальная цена за ночь:5000');
+    setMinPrice(priceInput, price.HOUSE);
   } else if (typeInput.value === 'palace') {
-    setMinPrice(priceInput, MIN_PRICE_PALACE);
-    priceInput.setCustomValidity('Минимальная цена за ночь:10000');
-  } else {
-    priceInput.setCustomValidity('');
+    setMinPrice(priceInput, price.PALACE);
   }
 });
 
@@ -178,6 +153,20 @@ guestsInput.addEventListener('change', function () {
     guestsInput.setCustomValidity('Это жилье не для гостей');
   } else {
     guestsInput.setCustomValidity('');
+  }
+});
+
+// зависимость количества комнат  от количества гостей
+
+roomsInput.addEventListener('change', function () {
+  if (roomsInput.value !== '100' && guestsInput.value === '0') {
+    roomsInput.setCustomValidity('Укажите количество гостей');
+  } else if (roomsInput.value < guestsInput.value) {
+    roomsInput.setCustomValidity('Количество комнат не может быть меньше количества гостей');
+  } else if (roomsInput.value === '100' && guestsInput.value !== '0') {
+    roomsInput.setCustomValidity('Это жилье не для гостей');
+  } else {
+    roomsInput.setCustomValidity('');
   }
 });
 
@@ -240,8 +229,8 @@ var advt = generateAds();
 var createPin = function (element) {
   var pin = pinTemplate.cloneNode(true);
   var pinPicture = pin.querySelector('img');
-  pin.style.left = element.location.x - (PIN_WIDTH / 2) + 'px';
-  pin.style.top = element.location.y - PIN_HEIGHT + 'px';
+  pin.style.left = element.location.x - (dataPin.WIDTH / 2) + 'px';
+  pin.style.top = element.location.y - dataPin.HEIGHT + 'px';
   pinPicture.src = element.author.avatar;
   pinPicture.alt = element.offer.title;
   return pin;
