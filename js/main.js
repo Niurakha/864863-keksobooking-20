@@ -158,16 +158,24 @@ guestsInput.addEventListener('change', function () {
 
 // зависимость количества комнат  от количества гостей
 
-roomsInput.addEventListener('change', function () {
-  if (roomsInput.value !== '100' && guestsInput.value === '0') {
-    roomsInput.setCustomValidity('Укажите количество гостей');
-  } else if (roomsInput.value < guestsInput.value) {
-    roomsInput.setCustomValidity('Количество комнат не может быть меньше количества гостей');
-  } else if (roomsInput.value === '100' && guestsInput.value !== '0') {
+var getRoomValidated = function () {
+  if (roomsInput.value === '100') {
     roomsInput.setCustomValidity('Это жилье не для гостей');
+  } else if (roomsInput.value < guestsInput.value) {
+    roomsInput.setCustomValidity('Недостаточно места для выбранного количества гостей');
+  } else if (roomsInput.value > guestsInput.value) {
+    roomsInput.setCustomValidity('Это предложение для большего числа гостей');
   } else {
     roomsInput.setCustomValidity('');
   }
+};
+
+roomsInput.addEventListener('change', function () {
+  getRoomValidated();
+});
+
+guestsInput.addEventListener('change', function () {
+  getRoomValidated();
 });
 
 // генерируем случайное число
