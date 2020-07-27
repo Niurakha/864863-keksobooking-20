@@ -159,11 +159,11 @@ guestsInput.addEventListener('change', function () {
 // зависимость количества комнат  от количества гостей
 
 var getRoomValidated = function () {
-  if (roomsInput.value === '100') {
+  if (roomsInput.value === '100' && guestsInput.value !== '0') {
     roomsInput.setCustomValidity('Это жилье не для гостей');
   } else if (roomsInput.value < guestsInput.value) {
     roomsInput.setCustomValidity('Недостаточно места для выбранного количества гостей');
-  } else if (roomsInput.value > guestsInput.value) {
+  } else if (roomsInput.value > guestsInput.value && roomsInput.value !== '100') {
     roomsInput.setCustomValidity('Это предложение для большего числа гостей');
   } else {
     roomsInput.setCustomValidity('');
