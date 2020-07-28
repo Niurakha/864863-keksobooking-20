@@ -91,8 +91,7 @@
 
   window.pin = {
     map: map,
-    renderPins: renderPins,
     adForm: adForm,
-    pins: pins
+    pins: pins,
   };
 })();

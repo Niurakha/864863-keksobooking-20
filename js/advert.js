@@ -53,7 +53,6 @@
 
   window.advert = {
     advt: advt,
-    generateAds: generateAds
   };
 
 

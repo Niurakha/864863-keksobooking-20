@@ -133,13 +133,6 @@
 
     return cardAd;
   };
-
-  // var renderCard = createCard(window.advert.advt[0]);
-
-  // if (renderCard) {
-  //   window.pin.map.insertBefore(renderCard, mapFiltersContainer);
-  // }
-
   var onCardEscapePress = function (evt) {
     if (evt.keyCode === window.data.KEYSCODE.escape) {
       closeCard();
@@ -200,7 +193,5 @@
   var mapPinsContainer = document.querySelector('.map__pins');
   mapPinsContainer.addEventListener('click', onMapPinsContainerClick);
 
-  window.card = {
-    mapFiltersContainer: mapFiltersContainer
-  };
+
 })();
