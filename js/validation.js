@@ -49,20 +49,6 @@
     checkInInput.value = checkOutInput.value;
   });
 
-  // зависимость количества гостей от количества комнат
-
-  guestsInput.addEventListener('change', function () {
-    if (roomsInput.value !== '100' && guestsInput.value === '0') {
-      guestsInput.setCustomValidity('Укажите количество гостей');
-    } else if (roomsInput.value < guestsInput.value) {
-      guestsInput.setCustomValidity('Количество гостей не может быть больше количества комнат');
-    } else if (roomsInput.value === '100' && guestsInput.value !== '0') {
-      guestsInput.setCustomValidity('Это жилье не для гостей');
-    } else {
-      guestsInput.setCustomValidity('');
-    }
-  });
-
   // зависимость количества комнат  от количества гостей
 
   var getRoomValidated = function () {
