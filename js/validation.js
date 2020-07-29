@@ -1,12 +1,15 @@
 'use strict';
 
 (function () {
-  var priceInput = window.pin.adForm.querySelector('#price');
-  var typeInput = window.pin.adForm.querySelector('#type');
-  var checkInInput = window.pin.adForm.querySelector('#timein');
-  var checkOutInput = window.pin.adForm.querySelector('#timeout');
-  var roomsInput = window.pin.adForm.querySelector('#room_number');
-  var guestsInput = window.pin.adForm.querySelector('#capacity');
+
+  var priceInput = window.form.adForm.querySelector('#price');
+  var typeInput = window.form.adForm.querySelector('#type');
+  var checkInInput = window.form.adForm.querySelector('#timein');
+  var checkOutInput = window.form.adForm.querySelector('#timeout');
+  var roomsInput = window.form.adForm.querySelector('#room_number');
+  var guestsInput = window.form.adForm.querySelector('#capacity');
+  var adFormSubmit = window.form.adForm.querySelector('.ad-form__submit');
+  var formInputs = window.form.adForm.querySelectorAll('input, select');
 
   var price = {
     BUNGALO: 0,
@@ -81,5 +84,26 @@
   guestsInput.addEventListener('change', function () {
     getRoomValidated();
   });
+
+  var checkFormFields = function (inputs) {
+    inputs.forEach(function (input) {
+      if (!input.validity.valid) {
+        input.classList.add('error-form');
+        return;
+      }
+
+      input.classList.remove('error-form');
+    });
+  };
+
+  adFormSubmit.addEventListener('click', function () {
+    checkFormFields(formInputs);
+  });
+
+  window.validation = {
+    getRoomValidated: getRoomValidated,
+    checkFormFields: checkFormFields,
+    setMinPrice: setMinPrice
+  };
 
 })();
