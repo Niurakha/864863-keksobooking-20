@@ -12,6 +12,32 @@
 
   var cardTemplate = document.querySelector('#card').content.querySelector('article');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var popupPhoto = cardTemplate.querySelector('.popup__photo');
+
+  // создаем фрагмент удобств
+  var createFeatureFragment = function (adData) {
+    var featureFragment = document.createDocumentFragment();
+    for (var i = 0; i < adData.offer.features.length; i++) {
+      var featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature', 'popup__feature--' + adData.offer.features[i]);
+      featureFragment.appendChild(featureItem);
+    }
+    return featureFragment;
+  };
+
+  // создаем фрагмент фото жилья
+  var createPhotosFragment = function (adData) {
+    var photosFragment = document.createDocumentFragment();
+    for (var i = 0; i < adData.offer.photos.length; i++) {
+      var popupPhotoItem = popupPhoto.cloneNode(true);
+      popupPhotoItem.src = adData.offer.photos[i];
+      popupPhotoItem.width = window.data.cardPhoto.IMG_WIDTH;
+      popupPhotoItem.height = window.data.cardPhoto.HEIGHT;
+      popupPhotoItem.alt = window.data.cardPhoto.IMG_ALT;
+      photosFragment.appendChild(popupPhotoItem);
+    }
+    return photosFragment;
+  };
 
   // создаем DOM-элемент объявления (карточка объявления)
 
@@ -83,7 +109,7 @@
     var popupFeatures = cardAd.querySelector('.popup__features');
     if (adv.offer.features) {
       popupFeatures.innerHTML = '';
-      popupFeatures.appendChild(window.utils.createFeatureFragment(adv));
+      popupFeatures.appendChild(createFeatureFragment(adv));
     } else {
       popupFeatures.remove();
     }
@@ -100,7 +126,7 @@
     var popupPhotos = cardAd.querySelector('.popup__photos');
     if (adv.offer.photos) {
       popupPhotos.removeChild(cardAd.querySelector('.popup__photo'));
-      popupPhotos.appendChild(window.utils.createPhotosFragment(adv));
+      popupPhotos.appendChild(createPhotosFragment(adv));
     } else {
       popupPhotos.remove();
     }
