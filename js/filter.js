@@ -57,13 +57,24 @@
   };
 
   var filterOffers = function (adverts) {
-    return adverts.filter(function (advert) {
-      return filterByAccommodationType(advert) &&
+    var filteredAdvs = [];
+    for (var i = 0; i < adverts.length; i++) {
+      var advert = adverts[i];
+      if (filterByAccommodationType(advert) &&
         filterByAccommodationPrice(advert) &&
         filterByRoomsAmount(advert) &&
         filterByGuestsAmount(advert) &&
-        filterByFeatures(advert);
-    }).slice(0, PINS_MAX_AMOUNT);
+        filterByFeatures(advert)
+      ) {
+        filteredAdvs.push(advert);
+      }
+
+      if (filteredAdvs.length === PINS_MAX_AMOUNT) {
+        break;
+      }
+    }
+
+    return filteredAdvs;
   };
 
   var updatePins = function () {

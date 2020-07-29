@@ -31,7 +31,7 @@
     for (var i = 0; i < adData.offer.photos.length; i++) {
       var popupPhotoItem = popupPhoto.cloneNode(true);
       popupPhotoItem.src = adData.offer.photos[i];
-      popupPhotoItem.width = window.data.cardPhoto.WIDTH;
+      popupPhotoItem.width = window.data.cardPhoto.IMG_WIDTH;
       popupPhotoItem.height = window.data.cardPhoto.HEIGHT;
       popupPhotoItem.alt = window.data.cardPhoto.IMG_ALT;
       photosFragment.appendChild(popupPhotoItem);

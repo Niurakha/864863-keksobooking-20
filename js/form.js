@@ -2,15 +2,17 @@
 
 (function () {
 
+  var messageClass = {
+    SUCCESS: 'success',
+    ERROR: 'error'
+  };
+
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
   var addressInput = adForm.querySelector('#address');
   var resetButton = adForm.querySelector('.ad-form__reset');
   var main = document.querySelector('main');
   var formInputs = adForm.querySelectorAll('input, select');
-  var successMessagePopup = document.querySelector('#success').content.querySelector('.success');
-  var errorMessagePopup = document.querySelector('#error').content.querySelector('.error');
-
 
   // поле адреса по-умолчанию
 
@@ -59,7 +61,11 @@
   setInactive();
 
   var createPopup = function (className) {
-    var popup = className.cloneNode(true);
+    var popupTemplate = document.querySelector('#' + className)
+      .content
+      .querySelector('.' + className);
+
+    var popup = popupTemplate.cloneNode(true);
     main.appendChild(popup);
 
     window.utils.addClickListener(popup, className);
@@ -67,11 +73,11 @@
   };
 
   var onError = function () {
-    createPopup(errorMessagePopup);
+    createPopup(messageClass.ERROR);
   };
 
   var onSuccess = function () {
-    createPopup(successMessagePopup);
+    createPopup(messageClass.SUCCESS);
     setInactive();
     window.map.setDisabled();
   };
